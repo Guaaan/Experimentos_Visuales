@@ -27,17 +27,17 @@ const sketch = ({ context, width, height }) => {
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
 
-    for (let i = 0; i < agents.length; i++){
+    for (let i = 0; i < agents.length; i++) {
       const agent = agents[i];
 
-      for (let j = i + 1; j< agents.length; j++){
+      for (let j = i + 1; j < agents.length; j++) {
         const other = agents[j];
 
         const dist = agent.pos.getDistance(other.pos);
 
         if (dist > 200) continue;
 
-        context.lineWidth = math.mapRange(dist, 0,200,12,1)
+        context.lineWidth = math.mapRange(dist, 0, 200, 12, 1);
 
         context.beginPath();
         context.moveTo(agent.pos.x, agent.pos.y);
@@ -49,7 +49,7 @@ const sketch = ({ context, width, height }) => {
     agents.forEach((agent) => {
       agent.update();
       agent.draw(context);
-      agent.bounce(width, height);
+      agent.wrap(width, height);
     });
   };
 };
@@ -62,11 +62,11 @@ class Vector {
     this.x = x;
     this.y = y;
   }
-  getDistance(v){
+  getDistance(v) {
     //pythagoras theorem to find the distance between two points
     const dx = this.x - v.x;
     const dy = this.y - v.y;
-    return Math.sqrt(dx * dx + dy * dy)
+    return Math.sqrt(dx * dx + dy * dy);
   }
 }
 
@@ -77,6 +77,21 @@ class Agent {
     this.radius = random.range(4, 12);
   }
 
+  //this looks cool
+  corner(width, height) {
+    if (this.pos.x < 0 || this.pos.x > width) this.pos.x = 0;
+    if (this.pos.y < 0 || this.pos.y > height) this.pos.y = 0;
+  }
+
+  //send the dot to the other corner of the canvas
+  wrap(width, height) {
+    if (this.pos.x <= 0 || this.pos.x >= width)
+      this.pos.x = Math.abs(this.pos.x - width);
+    if (this.pos.y <= 0 || this.pos.y >= height)
+      this.pos.y = Math.abs(this.pos.y - height);
+  }
+
+  //bounce the dots
   bounce(width, height) {
     if (this.pos.x <= 0 || this.pos.x >= width) this.vel.x *= -1;
     if (this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
@@ -97,6 +112,7 @@ class Agent {
 
     context.beginPath();
     context.arc(0, 0, this.radius, 0, Math.PI * 2);
+    //context.fillStyle = "white";
     context.fill();
     context.stroke();
 
