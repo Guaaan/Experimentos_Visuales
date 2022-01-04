@@ -49,7 +49,7 @@ const sketch = ({ context, width, height }) => {
     agents.forEach((agent) => {
       agent.update();
       agent.draw(context);
-      agent.wrap(width, height);
+      agent.bounce(width, height);
     });
   };
 };
