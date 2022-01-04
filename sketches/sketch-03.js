@@ -15,16 +15,29 @@ const animate = () => {
 const sketch = ({ context, width, height }) => {
   const agents = [];
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 40; i++) {
     const x = random.range(0, width);
     const y = random.range(0, height);
 
     agents.push(new Agent(x, y));
   }
-  
+
   return ({ context, width, height }) => {
     context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
+
+    for (let i = 0; i < agents.length; i++){
+      const agent = agents[i];
+
+      for (let j = i + 1; j< agents.length; j++){
+        const other = agents[j];
+
+        context.beginPath();
+        context.moveTo(agent.pos.x, agent.pos.y);
+        context.lineTo(other.pos.x, other.pos.y);
+        context.stroke();
+      }
+    }
 
     agents.forEach((agent) => {
       agent.update();
