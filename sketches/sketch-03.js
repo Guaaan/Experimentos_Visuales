@@ -1,5 +1,6 @@
 const canvasSketch = require("canvas-sketch");
 const random = require("canvas-sketch-util/random");
+const math = require("canvas-sketch-util/math");
 
 const settings = {
   dimensions: [1080, 1080],
@@ -15,7 +16,7 @@ const animate = () => {
 const sketch = ({ context, width, height }) => {
   const agents = [];
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 60; i++) {
     const x = random.range(0, width);
     const y = random.range(0, height);
 
@@ -35,6 +36,8 @@ const sketch = ({ context, width, height }) => {
         const dist = agent.pos.getDistance(other.pos);
 
         if (dist > 200) continue;
+
+        context.lineWidth = math.mapRange(dist, 0,200,12,1)
 
         context.beginPath();
         context.moveTo(agent.pos.x, agent.pos.y);
