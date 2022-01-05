@@ -46,14 +46,14 @@ const sketch = () => {
 };
 
 const onKeyUp = (e) => {
-  text = e.key.ToUpperCase();
+  text = e.key.toUpperCase();
   manager.render();
 };
 
 document.addEventListener('keyup', onKeyUp)
 
 const start = async () => {
-  manager = canvasSketch(sketch, settings);
+  manager = await canvasSketch(sketch, settings);
 };
 
 start();
