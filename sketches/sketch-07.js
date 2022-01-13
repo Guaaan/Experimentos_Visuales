@@ -1,5 +1,5 @@
-const canvasSketch = require('canvas-sketch');
-const load = require('load-asset');
+const canvasSketch = require("canvas-sketch");
+const load = require("load-asset");
 const Tweakpane = require("tweakpane");
 
 const settings = {
@@ -9,18 +9,18 @@ const settings = {
 
 const params = {
   animate: false,
-  row: 0.70,
+  row: 0.7,
   col: 0.925,
-}
-const sketch = (async ({ update }) => {
-  const image = await load('assets/baboon.jpg');
-  
-  
+};
+const sketch = async ({ update }) => {
+  const image = await load("assets/baboon.jpg");
+
   update({
-    dimensions: [ image.width, image.height ]
+    dimensions: [image.width, image.height],
   });
 
   return ({ context, width, height }) => {
+    
     // Render to canvas
     context.drawImage(image, 0, 0, width, height);
 
@@ -54,18 +54,16 @@ const sketch = (async ({ update }) => {
     const createPane = () => {
       const pane = new Tweakpane.Pane();
       let folder;
-    
-      folder = pane.addFolder({title: "edit "});
+
+      folder = pane.addFolder({ title: "edit " });
       //folder.addInput(params, "animate");
-      folder.addInput(params, "row", {min: 0.01, max: 2, step: 0.01 });
-      folder.addInput(params, "col", {min: 0.01, max: 2, step: 0.01 });
-      folder = pane.addFolder({title: "Noise "});	
-      
-      
+      folder.addInput(params, "row", { min: 0.01, max: 2, step: 0.01 });
+      folder.addInput(params, "col", { min: 0.01, max: 2, step: 0.01 });
+      folder = pane.addFolder({ title: "Noise " });
     };
     createPane();
     context.putImageData(pixels, 0, 0);
   };
-});
+};
 
 canvasSketch(sketch, settings);

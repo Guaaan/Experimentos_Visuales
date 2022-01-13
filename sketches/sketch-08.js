@@ -1,14 +1,9 @@
-/**
- * An advanced Canvas2D example of creating artwork for a Risograph printer.
- * This exports multiple layers: each color as a black & white mask,
- * a proof (composite of all colours), and a JSON metadata of ink colours & intensities.
- * @author Matt DesLauriers (@mattdesl)
- */
-
 const sketcher = require("canvas-sketch");
 const seedRandom = require("seed-random");
+const Tweakpane = require("tweakpane");
 
 const settings = {
+  dimensions: [2048, 2048],
   // We can turn on viewport scaling to make the image
   // appear a bit more crisp during development. This will not
   // affect output size.
@@ -19,6 +14,12 @@ const settings = {
   dimensions: [8.5, 11],
   // all our dimensions and rendering units will use inches
   units: "in",
+};
+
+const params = {
+  //animate: false,
+  generateVel: 1500,
+  background: "white",
 };
 
 const sketch = ({ width, height, render }) => {
@@ -40,13 +41,13 @@ const sketch = ({ width, height, render }) => {
   });
 
   // Background color
-  const background = "white";
+  const background = params.background;
 
   // Provide an initial generation
   generate();
 
   // And update every X milliseconds
-  setInterval(generate, 1500);
+  setInterval(generate, params.generateVel);
 
   return function (props) {
     const { canvas, context, width, height } = props;
@@ -190,4 +191,12 @@ const sketch = ({ width, height, render }) => {
   }
 };
 
+const createPane = () => {
+  const pane = new Tweakpane.Pane();
+  let folder;
+  folder = pane.addFolder({ title: "edit " });
+  folder.addInput(params, "background", { options: { white: "white", grey: "Black"} });
+  folder.addInput(params, "generateVel", { min: 500, max: 5000, step: 5 });
+};
+//createPane();
 sketcher(sketch, settings);

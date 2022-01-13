@@ -15,7 +15,8 @@ const settings = {
   orientation: 'portrait',
   pixelsPerInch: 300,
   scaleToView: true,
-  units: 'cm'
+  units: 'cm',
+  animate: true,
 };
 
 // function to generate a random number between min and max
